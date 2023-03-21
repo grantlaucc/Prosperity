@@ -5,6 +5,7 @@
 
 from typing import Dict, List, ClassVar
 from datamodel import OrderDepth, TradingState, Order
+from math import inf
 import pandas as pd
 
 class Trader:
@@ -14,7 +15,7 @@ class Trader:
     productLimitDict = {"PEARLS":20,"BANANAS":20}
     productAggressionDict = {"PEARLS":0.25, "BANANAS":0.25}
     stopLossPeriods = 10
-    productEmergencyThresholdDict = {"PEARLS":0.02,"BANANAS":0.02}
+    productEmergencyThresholdDict = {"PEARLS": inf,"BANANAS": 0.00015}
     
     def __init__(self):
         self.Tracking = self.createTracking()
