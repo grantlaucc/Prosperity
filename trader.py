@@ -8,8 +8,8 @@ from datamodel import OrderDepth, TradingState, Order
 import pandas as pd
 
 class Trader:
-    MAX_QUANTITY: ClassVar[int] = 20
-    MIN_SPREAD: ClassVar[int] = 3
+    max_quantities: ClassVar[Dict[str, int]] = {'PEARLS': 20, 'BANANAS': 20}
+    min_spreads: ClassVar[Dict[str, int]] = {'PEARLS': 3, 'BANANAS': 3}
 
     productLimitDict = {"PEARLS":20,"BANANAS":20}
     productAggressionDict = {"PEARLS":0.25, "BANANAS":0.25}
@@ -43,19 +43,17 @@ class Trader:
             print(trackingRowDict)
 
             productPosition = state.position.get(product, 0)
-            bidQuantity = self.MAX_QUANTITY - productPosition
-            askQuantity = self.MAX_QUANTITY + productPosition
+            bidQuantity = self.max_quantities[product] - productPosition
+            askQuantity = self.max_quantities[product] + productPosition
 
             #Detect emergency market
             nPeriodAvgReturn = self.Tracking[product]['Mid'].pct_change().tail(self.stopLossPeriods).mean()
             if nPeriodAvgReturn < -1*self.productEmergencyThresholdDict[product] and productPosition>0:
                 print(product,"Emergency Falling Market")
                 bidQuantity = 0
-                askQuantity = productPosition
             elif nPeriodAvgReturn > self.productEmergencyThresholdDict[product] and productPosition<0:
                 print(product,"Emergency Rising Market")
                 askQuantity = 0
-                bidQuantity = -productPosition
 
             bidPrice = trackingRowDict["Bid"][0]
             askPrice = trackingRowDict["Ask"][0]
@@ -70,10 +68,10 @@ class Trader:
 
             orders = []
 
-            if spread >= self.MIN_SPREAD and bidQuantity > 0:
+            if spread >= self.min_spreads[product] and bidQuantity > 0:
                 orders.append(Order(product, bidPrice, bidQuantity))
 
-            if spread >= self.MIN_SPREAD and askQuantity > 0:
+            if spread >= self.min_spreads[product] and askQuantity > 0:
                 orders.append(Order(product, askPrice, -askQuantity))
 
             result[product] = orders
