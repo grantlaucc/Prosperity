@@ -9,13 +9,13 @@ from math import inf
 import pandas as pd
 
 class Trader:
-    max_quantities: ClassVar[Dict[str, int]] = {'PEARLS': 20, 'BANANAS': 20}
-    min_spreads: ClassVar[Dict[str, int]] = {'PEARLS': 3, 'BANANAS': 3}
+    max_quantities: ClassVar[Dict[str, int]] = {'PEARLS': 20, 'BANANAS': 20, 'COCONUTS': 600, 'PINA_COLADAS': 300}
+    min_spreads: ClassVar[Dict[str, int]] = {'PEARLS': 2, 'BANANAS': 3, 'COCONUTS': 3, 'PINA_COLADAS': 3}
 
-    productLimitDict = {"PEARLS":20,"BANANAS":20}
-    productAggressionDict = {"PEARLS":0.25, "BANANAS":0.25}
+    productLimitDict = {"PEARLS":20, "BANANAS":20, 'COCONUTS': 20, 'PINA_COLADAS': 20}
+    productAggressionDict = {"PEARLS":0.25, "BANANAS":0.25, 'COCONUTS': 0.25, 'PINA_COLADAS': 0.25}
     stopLossPeriods = 10
-    productEmergencyThresholdDict = {"PEARLS": inf,"BANANAS": 0.00015}
+    productEmergencyThresholdDict = {"PEARLS": inf,"BANANAS": 0.0001, 'COCONUTS': 0.0001, 'PINA_COLADAS': 0.0001}
     
     def __init__(self):
         self.Tracking = self.createTracking()
